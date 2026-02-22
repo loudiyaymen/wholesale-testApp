@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+coverage/
+
+# Angular
+client/node_modules/
+client/dist/
+client/.angular/
+client/coverage/
+
+# Editors / OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store

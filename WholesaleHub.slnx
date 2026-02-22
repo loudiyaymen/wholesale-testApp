@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WholesaleHub.Api/WholesaleHub.Api.csproj" />
+    <Project Path="src/WholesaleHub.Application/WholesaleHub.Application.csproj" />
+    <Project Path="src/WholesaleHub.Domain/WholesaleHub.Domain.csproj" />
+    <Project Path="src/WholesaleHub.Infrastructure/WholesaleHub.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WholesaleHub.IntegrationTests/WholesaleHub.IntegrationTests.csproj" />
+    <Project Path="tests/WholesaleHub.UnitTests/WholesaleHub.UnitTests.csproj" />
+  </Folder>
+</Solution>

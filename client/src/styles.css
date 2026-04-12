@@ -1,0 +1,121 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+@import 'tailwindcss/utilities.css';
+
+@import '@spartan-ng/brain/hlm-tailwind-preset.css';
+
+:root {
+  color-scheme: light;
+
+  /* Warehouse floor: concrete base, dock-blue ink, safety yellow only for "act on this soon". */
+  --font-sans: 'Barlow', system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', 'Barlow', sans-serif;
+
+  --radius: 0.25rem;
+  --background: #e7eae8; /* concrete */
+  --foreground: #16202a; /* ink */
+  --card: #ffffff;
+  --card-foreground: #16202a;
+  --popover: #ffffff;
+  --popover-foreground: #16202a;
+  --primary: #1d4b73; /* dock blue */
+  --primary-foreground: #ffffff;
+  --secondary: #d6dbd8;
+  --secondary-foreground: #16202a;
+  --muted: #dde1de;
+  --muted-foreground: #56626c; /* steel */
+  --accent: #dde1de; /* spartan uses accent for hover/highlight, keep it neutral */
+  --accent-foreground: #16202a;
+  --signal: #f4c20d; /* safety yellow. only for things that need action soon */
+  --destructive: #b3261e;
+  --border: #c6cdc9;
+  --input: #b4bdb8;
+  --ring: #1d4b73;
+  --chart-1: #1d4b73;
+  --chart-2: #f4c20d;
+  --chart-3: #56626c;
+  --chart-4: #8aa1b4;
+  --chart-5: #b3261e;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #16202a;
+  --sidebar-primary: #1d4b73;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dde1de;
+  --sidebar-accent-foreground: #16202a;
+  --sidebar-border: #c6cdc9;
+  --sidebar-ring: #1d4b73;
+}
+
+/* TODO: dark mode. The generated .dark tokens below are still Spartan's defaults */
+:root.dark {
+  color-scheme: dark;
+
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.984 0.003 247.858);
+  --sidebar-primary-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-display);
+  --color-signal: var(--signal);
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum' 1; /* tabular numbers everywhere, lots of prices in this app */
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.005em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,25 @@
+<header class="bg-primary text-primary-foreground">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-2 px-4 py-3 sm:px-6">
+    <a routerLink="/" class="font-display text-2xl font-semibold tracking-tight">WholesaleHub</a>
+
+    <nav class="flex flex-wrap gap-1 text-[15px]" aria-label="Main">
+      @for (link of links; track link.path) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="!border-signal text-white"
+          [routerLinkActiveOptions]="{ exact: link.exact }"
+          class="border-b-2 border-transparent px-2 py-1 text-white/75 hover:text-white"
+          >{{ link.label }}</a
+        >
+      }
+    </nav>
+
+    <a hlmBtn routerLink="/agreements/new" class="ml-auto bg-white text-primary hover:bg-white/90">New quote</a>
+  </div>
+</header>
+
+<main class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+  <router-outlet />
+</main>
+
+<hlm-toaster position="bottom-right" />

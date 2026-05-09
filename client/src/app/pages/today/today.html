@@ -1,0 +1,41 @@
+<section class="mb-10 max-w-3xl">
+  <h1 class="text-5xl leading-none font-bold sm:text-6xl">{{ now | date: 'EEEE d MMMM' }}</h1>
+
+  @if (summary(); as s) {
+    <p class="mt-4 text-xl leading-relaxed">
+      You have {{ s.activeProductCount | i18nPlural: plural.product }} on sale and {{ s.customerCount | i18nPlural: plural.customer }}.
+      {{ s.activeAgreementCount | i18nPlural: plural.agreement }} worth
+      <strong class="font-semibold">{{ s.annualAgreementValue | currency: 'CAD' : 'symbol-narrow' : '1.0-0' }}</strong> a year.
+      {{ s.draftAgreementCount | i18nPlural: plural.draft }} waiting for a signature.
+      @if (s.draftAgreementCount > 0) {
+        <a routerLink="/agreements" [queryParams]="{ status: 'Draft' }" class="text-primary underline underline-offset-4">See quotes</a>
+      }
+    </p>
+  } @else if (failed()) {
+    <p class="text-destructive mt-4 text-lg">Couldn't load today's numbers. Check that the API is running, then reload.</p>
+  } @else {
+    <div class="mt-5 space-y-2">
+      <div hlmSkeleton class="h-6 w-full"></div>
+      <div hlmSkeleton class="h-6 w-2/3"></div>
+    </div>
+  }
+</section>
+
+<section>
+  <div class="mb-3 flex items-baseline justify-between gap-4">
+    <h2 class="text-2xl font-semibold">Expiring in the next {{ summary()?.renewalWindowDays ?? 60 }} days</h2>
+    <a routerLink="/renewals" class="text-primary text-sm underline underline-offset-4">All renewals</a>
+  </div>
+
+  @if (renewals(); as list) {
+    @if (list.length) {
+      <app-dock-board [renewals]="list" />
+    } @else {
+      <p class="text-muted-foreground border-border border-y bg-card px-5 py-6">
+        Nothing expires in the next {{ summary()?.renewalWindowDays ?? 60 }} days.
+      </p>
+    }
+  } @else if (!failed()) {
+    <div hlmSkeleton class="h-40 w-full"></div>
+  }
+</section>

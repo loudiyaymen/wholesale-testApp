@@ -1,0 +1,66 @@
+<h1 class="mb-6 text-4xl font-bold">{{ id() ? 'Edit customer' : 'Add customer' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="save()" novalidate class="border-border max-w-3xl border bg-card p-6">
+  <hlm-field-group class="grid gap-6 sm:grid-cols-2">
+    <hlm-field class="sm:col-span-2">
+      <label hlmFieldLabel for="legalName">Legal name</label>
+      <input hlmInput id="legalName" formControlName="legalName" autocomplete="organization" />
+      <hlm-field-error validator="required">Enter the company's legal name.</hlm-field-error>
+      <hlm-field-error validator="server">{{ serverError(form.controls.legalName) }}</hlm-field-error>
+    </hlm-field>
+
+    <hlm-field>
+      <label hlmFieldLabel for="businessNumber">Business number</label>
+      <input hlmInput id="businessNumber" formControlName="businessNumber" inputmode="numeric" maxlength="9" />
+      <hlm-field-description>The 9-digit CRA number.</hlm-field-description>
+      <hlm-field-error validator="required">Enter the business number.</hlm-field-error>
+      <hlm-field-error validator="pattern">Use exactly 9 digits, no spaces.</hlm-field-error>
+      <hlm-field-error validator="server">{{ serverError(form.controls.businessNumber) }}</hlm-field-error>
+    </hlm-field>
+
+    <hlm-field>
+      <label hlmFieldLabel for="paymentTerms">Payment terms</label>
+      <hlm-select formControlName="paymentTerms">
+        <hlm-select-trigger buttonId="paymentTerms" class="w-full">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content *hlmSelectPortal>
+          @for (t of terms; track t) {
+            <hlm-select-item [value]="t">{{ t }}</hlm-select-item>
+          }
+        </hlm-select-content>
+      </hlm-select>
+      <hlm-field-description>Days they have to pay an invoice.</hlm-field-description>
+    </hlm-field>
+
+    <hlm-field>
+      <label hlmFieldLabel for="contactName">Contact name</label>
+      <input hlmInput id="contactName" formControlName="contactName" autocomplete="name" />
+      <hlm-field-error validator="required">Enter who we deal with.</hlm-field-error>
+    </hlm-field>
+
+    <hlm-field>
+      <label hlmFieldLabel for="contactEmail">Contact email</label>
+      <input hlmInput id="contactEmail" type="email" formControlName="contactEmail" autocomplete="email" />
+      <hlm-field-error validator="required">Enter an email address.</hlm-field-error>
+      <hlm-field-error validator="email">That doesn't look like an email address.</hlm-field-error>
+      <hlm-field-error validator="server">{{ serverError(form.controls.contactEmail) }}</hlm-field-error>
+    </hlm-field>
+
+    <hlm-field>
+      <label hlmFieldLabel for="contactPhone">Phone (optional)</label>
+      <input hlmInput id="contactPhone" type="tel" formControlName="contactPhone" autocomplete="tel" />
+    </hlm-field>
+
+    <hlm-field class="sm:col-span-2">
+      <label hlmFieldLabel for="shippingAddress">Shipping address</label>
+      <input hlmInput id="shippingAddress" formControlName="shippingAddress" autocomplete="street-address" />
+      <hlm-field-error validator="required">Enter where we deliver to.</hlm-field-error>
+    </hlm-field>
+  </hlm-field-group>
+
+  <div class="mt-8 flex justify-end gap-2">
+    <a hlmBtn variant="outline" [routerLink]="id() ? ['/customers', id()] : ['/customers']">Cancel</a>
+    <button hlmBtn type="submit" [disabled]="saving()">{{ saving() ? 'Saving…' : id() ? 'Save changes' : 'Add customer' }}</button>
+  </div>
+</form>

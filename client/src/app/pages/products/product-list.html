@@ -1,0 +1,54 @@
+<div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+  <h1 class="text-4xl font-bold">Products</h1>
+  <a hlmBtn routerLink="/products/new">Add product</a>
+</div>
+
+<div class="mb-4 flex flex-wrap items-center gap-4">
+  <input hlmInput type="search" class="w-full max-w-sm bg-card" [formControl]="search" placeholder="Search SKU, name or category" aria-label="Search products" />
+  <hlm-tabs [tab]="show()" (tabActivated)="show.set($any($event))">
+    <hlm-tabs-list aria-label="Which products">
+      <button hlmTabsTrigger="selling">On sale</button>
+      <button hlmTabsTrigger="all">Include discontinued</button>
+    </hlm-tabs-list>
+  </hlm-tabs>
+</div>
+
+@if (result(); as r) {
+  @if (r.items.length) {
+    <div hlmTableContainer class="border-border border bg-card">
+      <table hlmTable>
+        <thead hlmTableHeader>
+          <tr hlmTableRow>
+            <th hlmTableHead>SKU</th>
+            <th hlmTableHead>Product</th>
+            <th hlmTableHead>Category</th>
+            <th hlmTableHead class="text-right">List price</th>
+            <th hlmTableHead><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody hlmTableBody>
+          @for (p of r.items; track p.id) {
+            <tr hlmTableRow [class.text-muted-foreground]="!p.isActive">
+              <td hlmTableCell class="font-medium tabular-nums">{{ p.sku }}</td>
+              <td hlmTableCell>
+                {{ p.name }}
+                @if (!p.isActive) { <span class="ml-1 text-sm">(discontinued)</span> }
+              </td>
+              <td hlmTableCell>{{ p.category }}</td>
+              <td hlmTableCell class="text-right tabular-nums">{{ p.listPrice | currency: 'CAD' : 'symbol-narrow' }} / {{ p.unit | unit }}</td>
+              <td hlmTableCell class="text-right whitespace-nowrap">
+                <a hlmBtn variant="ghost" size="sm" [routerLink]="['/products', p.id, 'edit']">Edit</a>
+                <button hlmBtn variant="ghost" size="sm" (click)="toggle(p)">{{ p.isActive ? 'Discontinue' : 'Put back on sale' }}</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-pager [page]="r.page" [totalPages]="r.totalPages" (pageChange)="page$.next($event)" />
+  } @else {
+    <p class="text-muted-foreground">No products match. Try another search, or include discontinued ones.</p>
+  }
+} @else {
+  <p class="text-muted-foreground">Loading products…</p>
+}

@@ -1,0 +1,33 @@
+# whole thing: sql server + api + angular (nginx)
+#   docker compose up --build   ->  http://localhost:8080
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Dev_Passw0rd!" # local development only
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q 'SELECT 1' || exit 1"]
+      interval: 5s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: src/WholesaleHub.Api/Dockerfile
+    environment:
+      ConnectionStrings__WholesaleHub: "Server=db,1433;Database=WholesaleHub;User Id=sa;Password=Dev_Passw0rd!;TrustServerCertificate=True"
+      Database__MigrateOnStartup: "true"
+      Database__SeedSampleData: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./client
+    ports:
+      - "8080:80"
+    depends_on:
+      - api

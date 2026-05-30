@@ -17,3 +17,6 @@ client/coverage/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+
+# spartan cli cache
+client/.nx/
